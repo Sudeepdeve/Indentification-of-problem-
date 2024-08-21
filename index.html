@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Identification</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+          
+            position: relative;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh; /* Ensure container takes full viewport height */
+        }
+
+        .box {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px); /* Apply blur filter */
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr); /* Single column grid for vertical layout */
+            grid-template-rows: repeat(12, auto); /* 12 rows for each point */
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: #ffffff;
+            border: 2px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+    
+
+        @keyframes bubbleAnimation {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+        }
+
+        .bubbles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            /* Center the bubbles container */
+        }
+
+        .bubble {
+            position: absolute;
+            background-color: rgba(0, 68, 204, 0.2);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: bubbleAnimation 6s infinite;
+        }
+
+        .bubble:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            left: 10%;
+            animation-duration: 5s;
+        }
+
+        .bubble:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            top: 50%;
+            left: 30%;
+            animation-duration: 7s;
+        }
+
+        .bubble:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            left: 70%;
+            animation-duration: 6s;
+        }
+
+        .bubble:nth-child(4) {
+            width: 140px;
+            height: 140px;
+            top: 30%;
+            left: 80%;
+            animation-duration: 8s;
+        }
+    </style>
+</head>
+<body>
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <div class="container">
+        <div class="box">
+            <h1>Problem Identification</h1>
+            
+            <!-- 12-column vertical layout section -->
+            <div class="info-grid">
+                <div class="info-item">people with physical differences are bullied</div>
+                <div class="info-item">Fear of result</div>
+                <div class="info-item">Insufficient Sleep</div>
+                <div class="info-item">Mind diversion</div>
+                <div class="info-item">Physical and mental torture</div>
+                <div class="info-item">Bad company</div>
+                <div class="info-item">Attraction towards nasty things</div>
+                <div class="info-item">unwanted wastage of assets</div>
+                <div class="info-item">Smart gadets addicition</div>
+                <div class="info-item">Provoke issues</div>
+                <div class="info-item">Lack of participation</div>
+                <div class="info-item">Distraction and anxiety</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
