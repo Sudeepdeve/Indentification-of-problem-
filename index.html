@@ -1,205 +1,168 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Problem Rater</title>
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Problem Identification</title>
     <style>
-        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background: #b3e5fc; /* Light blue background */
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+          
             position: relative;
-            color: #333; /* Darker text color for contrast */
         }
 
-        /* Header Styles */
-        header {
-            background-color: #81d4fa;
-            padding: 20px;
-            text-align: center;
-            color: #004d40;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        /* Header Heading */
-        h1 {
-            margin: 0;
-            font-size: 2.2em; /* Slightly larger font size for better visibility */
-        }
-
-        /* Main Section Styles */
-        main {
-            padding: 20px;
-        }
-
-        /* Class Section Styles */
-        .class-section {
-            margin-bottom: 30px;
-        }
-
-        /* Highlighted Heading */
-        .highlight {
-            color: #0288d1; /* Royal blue for headings */
-            font-size: 1.8em; /* Increased font size */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        /* Problem Container Grid */
-        .problem-container {
+        .container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-            gap: 15px; /* Adjusted gap */
-        }
-
-        /* Problem Box Styles */
-        .problem-box {
-            border: 2px solid #0288d1;
-            border-radius: 10px;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
             padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            font-weight: bold; /* Bold text */
-            font-size: 1.2em; /* Medium size text */
-            color: #333; /* Darker text color */
+            position: relative;
+            z-index: 1;
+            min-height: 100vh; /* Ensure container takes full viewport height */
         }
 
-        /* Problem Box Hover Effect */
-        .problem-box:hover {
-            transform: scale(1.05);
+        .box {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px); /* Apply blur filter */
         }
 
-        /* Textarea Styling */
-        textarea {
-            width: 100%;
-            height: 100px; /* Set a fixed height */
-            border: 1px solid #e0f7fa; /* Light border color */
-            border-radius: 8px; /* Rounded corners */
-            padding: 10px;
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr); /* Single column grid for vertical layout */
+            grid-template-rows: repeat(12, auto); /* 12 rows for each point */
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: #ffffff;
+            border: 2px solid #333;
+            border-radius: 4px;
+            padding: 15px;
             box-sizing: border-box;
-            font-size: 1em; /* Consistent font size */
-            resize: none; /* Disable resizing */
-            background-color: #ffffff; /* White background */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for subtle effect */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        /* Remove textarea border on focus */
-        textarea:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px #0288d1; /* Blue outline on focus */
+        .info-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
-        /* Bubble Background */
-        @keyframes bubbleMove {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
-            100% { transform: translateY(0); }
+    
+
+        @keyframes bubbleAnimation {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
         }
 
-        body::before {
-            content: '';
+        .bubbles {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 40%);
-            background-size: 50px 50px;
-            z-index: -1;
-            animation: bubbleMove 10s infinite ease-in-out;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            /* Center the bubbles container */
         }
 
-        /* Keyframes for Fade-In Effect */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .bubble {
+            position: absolute;
+            background-color: rgba(0, 68, 204, 0.2);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: bubbleAnimation 6s infinite;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .highlight {
-                font-size: 1.4em; /* Adjusted font size for smaller screens */
-            }
+        .bubble:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            left: 10%;
+            animation-duration: 5s;
+        }
 
-            .problem-box {
-                font-size: 1em; /* Adjusted font size */
-            }
+        .bubble:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            top: 50%;
+            left: 30%;
+            animation-duration: 7s;
+        }
 
-            textarea {
-                height: 80px; /* Adjusted height for smaller screens */
-                font-size: 0.9em;
-            }
+        .bubble:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            left: 70%;
+            animation-duration: 6s;
+        }
+
+        .bubble:nth-child(4) {
+            width: 140px;
+            height: 140px;
+            top: 30%;
+            left: 80%;
+            animation-duration: 8s;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Rating Of Problem 
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
 
-        </h1>
-    </header>
-    <main>
-        <section id="class-a" class="class-section">
-            <h2 class="highlight">Class A</h2>
-            <div class="problem-container">
-                <div class="problem-box">
-                    <textarea aria-label="Physical and mental torture" placeholder="Physical and mental torture"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Attraction towards nasty things" placeholder="Attraction towards nasty things"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Bad company" placeholder="Bad company"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Lack of participation" placeholder="Lack of participation"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Problem 5" placeholder="Mind diversion"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Problem 6" placeholder="Physical and mental torture"></textarea>
-                </div>
+    <div class="container">
+        <div class="box">
+            <h1>Problem Identification</h1>
+            
+            <!-- 12-column vertical layout section -->
+            <div class="info-grid">
+                <div class="info-item">people with physical differences are bullied</div>
+                <div class="info-item">Fear of result</div>
+                <div class="info-item">Insufficient Sleep</div>
+                <div class="info-item">Mind diversion</div>
+                <div class="info-item">Physical and mental torture</div>
+                <div class="info-item">Bad company</div>
+                <div class="info-item">Attraction towards nasty things</div>
+                <div class="info-item">unwanted wastage of assets</div>
+                <div class="info-item">Smart gadets addicition</div>
+                <div class="info-item">Provoke issues</div>
+                <div class="info-item">Lack of participation</div>
+                <div class="info-item">Distraction and anxiety</div>
             </div>
-        </section>
-        <section id="class-b" class="class-section">
-            <h2 class="highlight">Class B</h2>
-            <div class="problem-container">
-                <div class="problem-box">
-                    <textarea aria-label="People with physical differences are bullied" placeholder="People with physical differences are bullied"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Unwanted wastage of assets" placeholder="Unwanted wastage of assets"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Smart gadgets addiction" placeholder="Smart gadgets addiction"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Problem 4" placeholder="Provoke issues"></textarea>
-                </div>
-            </div>
-        </section>
-        <section id="class-c" class="class-section">
-            <h2 class="highlight">Class C</h2>
-            <div class="problem-container">
-                <div class="problem-box">
-                    <textarea aria-label="Fear of result" placeholder="Fear of result"></textarea>
-                </div>
-                <div class="problem-box">
-                    <textarea aria-label="Insufficient sleep" placeholder="Insufficient sleep"></textarea>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </div>
     <style>
         .custom-button {
             display: inline-block;
